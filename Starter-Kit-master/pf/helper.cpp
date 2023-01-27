@@ -36,32 +36,143 @@ namespace pf
 #endif
     }
 
-    void Up(int& row, int& col)
+    char Up(int& row, int& col)
     {
-        kBoard[row - 1][col] = kBoard[row][col];
-        kBoard[row][col] = ' ';
-        row -= 1;
+        if(kBoard[row][col] != kBoard[0][col])
+        {
+            if(kBoard[row - 1][col] == ' ')
+            {
+                kBoard[row - 1][col] = kBoard[row][col];
+                kBoard[row][col] = ' ';
+                row -= 1;
+                return 'a'; //'a' means empty space
+            }
+            else
+            {
+                //Erase and return character
+                if(kBoard[row - 1][col] != 'r') 
+                {
+                    int tempObj = kBoard[row - 1][col];
+
+                    kBoard[row - 1][col] = kBoard[row][col];
+                    kBoard[row][col] = ' ';
+                    row -= 1;
+                    return tempObj;
+                }
+                //just return character
+                else
+                {
+                    return kBoard[row - 1][col];
+                }
+            }
+        }
+        else
+        {
+            return 'b'; //'b' means border blocking
+        }
+        
     }
 
-    void Down(int& row, int& col)
+    char Down(int& row, int& col)
     {
-        kBoard[row + 1][col] = kBoard[row][col];
-        kBoard[row][col] = ' ';
-        row += 1;
+        if(kBoard[row][col] != kBoard[kRows][col])
+        {
+            if(kBoard[row + 1][col] == ' ')
+            {
+                kBoard[row + 1][col] = kBoard[row][col];
+                kBoard[row][col] = ' ';
+                row += 1;
+                return 'a';
+            }
+            else
+            {
+                if(kBoard[row + 1][col] != 'r')
+                {
+                    int tempObj = kBoard[row + 1][col];
+
+                    kBoard[row + 1][col] = kBoard[row][col];
+                    kBoard[row][col] = ' ';
+                    row += 1;
+                    return tempObj;
+                }
+                else
+                {
+                    return kBoard[row - 1][col];
+                }
+            }
+        }
+        else
+        {
+            return 'b';
+        }
     }
 
-    void Left(int& row, int& col)
+    char Left(int& row, int& col)
     {
-        kBoard[row][col - 1] = kBoard[row][col];
-        kBoard[row][col] = ' ';
-        col -= 1;
+        if(kBoard[row][col] != kBoard[row][0])
+        {
+            if(kBoard[row][col - 1] == ' ')
+            {
+                kBoard[row][col - 1] = kBoard[row][col];
+                kBoard[row][col] = ' ';
+                col -= 1;
+                return 'a';
+            }
+            else
+            {
+                if(kBoard[row][col - 1] != 'r')
+                {
+                    int tempObj = kBoard[row][col - 1];
+
+                    kBoard[row][col - 1] = kBoard[row][col];
+                    kBoard[row][col] = ' ';
+                    col -= 1;
+                    return tempObj;
+                }
+                else
+                {
+                    return kBoard[row][col - 1];
+                }
+            }
+        }
+        else
+        {
+            return 'b';
+        }
     }
 
-    void Right(int& row, int& col)
+    char Right(int& row, int& col)
     {
-        kBoard[row][col + 1] = kBoard[row][col];
-        kBoard[row][col] = ' ';
-        col += 1;
+        if(kBoard[row][col] != kBoard[row][kColumns])
+        {
+            if(kBoard[row][col + 1] == ' ')
+            {
+                kBoard[row][col + 1] = kBoard[row][col];
+                kBoard[row][col] = ' ';
+                col += 1;
+                return 'a';
+            }
+            else
+            {
+                if(kBoard[row][col + 1] != 'r')
+                {
+                    int tempObj = kBoard[row][col + 1];
+
+                    kBoard[row][col + 1] = kBoard[row][col];
+                    kBoard[row][col] = ' ';
+                    col += 1;
+                    return tempObj;
+                }
+                else
+                {
+                    return kBoard[row + 1][col];
+                }
+            }
+        }
+        else
+        {
+            return 'b';
+        }
     }
 
     
