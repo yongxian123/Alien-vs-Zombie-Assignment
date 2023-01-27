@@ -11,11 +11,12 @@ namespace pf
  
     int ClearScreen();
     int Pause();
-
-    void Up(int& row, int& col);
-    void Down(int& row, int& col);
-    void Left(int& row, int& col);
-    void Right(int& row, int& col);
+    
+    void pickObject(char obj);
+    char Up(int& row, int& col);
+    char Down(int& row, int& col);
+    char Left(int& row, int& col);
+    char Right(int& row, int& col);
     void CreateGameBoard(int& alienRow, int& alienCol);
     void ShowGameBoard();
     
