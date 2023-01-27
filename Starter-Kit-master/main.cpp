@@ -52,6 +52,7 @@ public:
     void displaySettings();
     bool updateSettings();
     void refreshBoard(Alien alien, Zombie zombies[]);
+    void checkObject(char obj);
     bool command();
 };
 
@@ -190,34 +191,121 @@ void Game::refreshBoard(Alien alien, Zombie zombies[])
     {
         zombies[i].showAttributes();
     }
+    cout << endl;
+}
+
+void Game::checkObject(char obj)
+{
+    if(obj == '<' || obj == '>' || obj == '^' || obj == 'v')
+    {
+        cout << "Alien finds an arrow." << endl;
+        cout << "Alien's attack is increased by 20." << endl;
+        cout << "(WIP)" << endl << endl;
+    }
+    else if(obj == 'h')
+    {
+        cout << "Alien finds a health pad." << endl;
+        cout << "Alien's life is increased by 20." << endl;
+    }
+    else if(obj == 'p')
+    {
+        cout << "Alien finds a pod." << endl;
+        cout << "(WIP)" << endl << endl;
+    }
+    else if(obj == 'r')
+    {
+        cout << "Alien stumbles upon a rock." << endl;
+        cout << "(WIP)" << endl << endl;
+    }
 }
 
 bool Game::command()
 {
     string comm_input;
-    cout << endl << "command> ";
+    cout << "command> ";
     cin >> comm_input;
+    cout << endl;
 
     //CHECKING COMMAND INPUT:
     if (comm_input == "up")
     {
-        pf::Up(pf::alienRow, pf::alienCol);
-        pf::Pause();
+        char success = pf::Up(pf::alienRow, pf::alienCol);
+        if(success == 'b')
+        {
+            cout << "A border is blocking the way!" << endl << endl;
+            command();
+            return false;
+        }
+        else if(success == 'a')
+        {
+            cout << "Alien finds an empty space." << endl << endl;
+            pf::Pause();
+        }
+        else
+        {
+            checkObject(success);
+            pf::Pause();
+        }
     }
     else if (comm_input == "down")
     {
-        pf::Down(pf::alienRow, pf::alienCol);
-        pf::Pause();
+        char success = pf::Down(pf::alienRow, pf::alienCol);
+        if(success == 'b')
+        {
+            cout << "A border is blocking the way!" << endl << endl;
+            command();
+            return false;
+        }
+        else if(success == 'a')
+        {
+            cout << "Alien finds an empty space." << endl << endl;
+            pf::Pause();
+        }
+        else
+        {
+            checkObject(success);
+            pf::Pause();
+        }
     }
     else if (comm_input == "left")
     {
-        pf::Left(pf::alienRow, pf::alienCol);
-        pf::Pause();
+        char success = pf::Left(pf::alienRow, pf::alienCol);
+        if(success == 'b')
+        {
+            cout << "A border is blocking the way!" << endl << endl;
+            command();
+            return false;
+        }
+        else if(success == 'a')
+        {
+            cout << "Alien finds an empty space." << endl << endl;
+            pf::Pause();
+        }
+        else
+        {
+            checkObject(success);
+            pf::Pause();
+        }
     }
     else if (comm_input == "right")
     {
-        pf::Right(pf::alienRow, pf::alienCol);
-        pf::Pause();
+        char success = pf::Right(pf::alienRow, pf::alienCol);
+        if(success == 'b')
+        {
+            cout << "A border is blocking the way!" << endl << endl;
+            command();
+            return false;
+        }
+        else if(success == 'a')
+        {
+            cout << "Alien finds an empty space." << endl << endl;
+            pf::Pause();
+        }
+        else
+        {
+            checkObject(success);
+            pf::Pause();
+        }
     }
     else if (comm_input == "arrow")
     {
@@ -361,6 +449,7 @@ int main()
         zombies[i].attributes(i + 1);
         zombies[i].showAttributes();
     }
+    cout << endl;
     
     //GAME TURNS LOOPING UNTIL WIN OR LOSE:
     
@@ -373,10 +462,6 @@ int main()
         
         for(int i = 0; i < pf::kZombies; ++i)
         {
-            /*if(i > 0)
-            {
-                zombies[i - 1].changeTurn();
-            }*/
             zombies[i].changeTurn();
             game.refreshBoard(alien, zombies);
             zombies[i].changeTurn();
