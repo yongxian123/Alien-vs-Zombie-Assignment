@@ -10,16 +10,20 @@ Please provide the YouTube link to your [Video Demo](https://youtube.com).
 
 List all the features completed.
 
-1. Cool Feature #1
-2. Cool Feature #2
-3. *add more*
+1. Game Settings (Dimensions & no. of Zombies)
+2. Game Board
+3. Game Characters (Appearance on board & Attributes)
+4. Alien Movement
+6. Game Objects (Appearance on board)
 
 ### To Do
 
 List all the features not yet done. Remove this section if there is no incomplete requirements.
 
-1. Cool Feature #1
-2. *add more*
+1. Proper Start Screen
+2. Zombie Movement & Attack
+3. Save and Load Game
+4. 
 
 ## Additional Features
 
@@ -29,21 +33,14 @@ Describe the additional features that has been implemented.
 
 List down the contribution of each group members.
 
-For example:
-
-### Tony Stark
+### Liew Yong Xian
 
 1. Randomly generate game board.
 2. *add more*
 
-### Steve Rogers
+### Lee Zheng Wei
 
 1. Zombie movement and attack behaviour.
-2. *add more*
-
-### Dr. Strange
-
-1. Implement all game objects.
 2. *add more*
 
 ## Problems Encountered & Solutions
