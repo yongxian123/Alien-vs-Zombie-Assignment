@@ -12,7 +12,6 @@ namespace pf
     int ClearScreen();
     int Pause();
     
-    void pickObject(char obj);
     char Up(int& row, int& col);
     char Down(int& row, int& col);
     char Left(int& row, int& col);
