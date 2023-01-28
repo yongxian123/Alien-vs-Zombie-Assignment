@@ -36,12 +36,14 @@ class Alien
 class Zombie
 {
     private:
-        int health, atk, range, num;
+        int health, atk, range, num, row, col;
         bool turn = false;
     public:
         void changeTurn();
+        void getCoordinates();
         void attributes(int noOfZombie);
         void showAttributes();
+        void move();
 };
 
 class Game
@@ -90,6 +92,16 @@ void Alien::showAttributes()
 }
 
 void Alien::attributes()
+{
+
+}
+
+void Zombie::getCoordinates()
+{
+    pf::SetCoordinates(row, col);
+}
+
+void Zombie::move()
 {
 
 }
@@ -229,7 +241,7 @@ bool Game::command()
     //CHECKING COMMAND INPUT:
     if (comm_input == "up")
     {
-        char success = pf::Up(pf::alienRow, pf::alienCol);
+        char success = pf::Up(pf::alienRow, pf::alienCol, 0);
         if(success == 'b')
         {
             cout << "A border is blocking the way!" << endl << endl;
@@ -249,7 +261,7 @@ bool Game::command()
     }
     else if (comm_input == "down")
     {
-        char success = pf::Down(pf::alienRow, pf::alienCol);
+        char success = pf::Down(pf::alienRow, pf::alienCol, 0);
         if(success == 'b')
         {
             cout << "A border is blocking the way!" << endl << endl;
@@ -269,7 +281,7 @@ bool Game::command()
     }
     else if (comm_input == "left")
     {
-        char success = pf::Left(pf::alienRow, pf::alienCol);
+        char success = pf::Left(pf::alienRow, pf::alienCol, 0);
         if(success == 'b')
         {
             cout << "A border is blocking the way!" << endl << endl;
@@ -289,7 +301,7 @@ bool Game::command()
     }
     else if (comm_input == "right")
     {
-        char success = pf::Right(pf::alienRow, pf::alienCol);
+        char success = pf::Right(pf::alienRow, pf::alienCol, 0);
         if(success == 'b')
         {
             cout << "A border is blocking the way!" << endl << endl;
@@ -446,6 +458,7 @@ int main()
     alien.showAttributes();
     for(int i = 0; i < pf::kZombies; ++i)
     {
+        zombies[i].getCoordinates();
         zombies[i].attributes(i + 1);
         zombies[i].showAttributes();
     }
