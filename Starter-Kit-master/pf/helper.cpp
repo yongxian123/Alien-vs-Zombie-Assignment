@@ -14,7 +14,6 @@ namespace pf
     int alienRow, alienCol;
     vector<vector<char>> kBoard;
     vector<pair<int, int>> zombiePos;
-    
 
     int kZombies = 1;
 
@@ -36,147 +35,181 @@ namespace pf
 #endif
     }
 
-    char Up(int& row, int& col)
+    void SetCoordinates(int &row, int &col)
     {
-        if(kBoard[row][col] != kBoard[0][col])
+        for (int i = 0; i < kZombies; i++)
         {
-            if(kBoard[row - 1][col] == ' ')
-            {
-                kBoard[row - 1][col] = kBoard[row][col];
-                kBoard[row][col] = ' ';
-                row -= 1;
-                return 'a'; //'a' means empty space
-            }
-            else
-            {
-                //Erase and return character
-                if(kBoard[row - 1][col] != 'r') 
-                {
-                    int tempObj = kBoard[row - 1][col];
+            row = zombiePos[i].first;
+            col = zombiePos[i].second;
+        }
+    }
 
+    char Up(int &row, int &col, int entity)
+    {
+        if (entity == 0) // 0 means Alien, 1 means Zombies
+        {
+            if (kBoard[row][col] != kBoard[0][col])
+            {
+                if (kBoard[row - 1][col] == ' ')
+                {
                     kBoard[row - 1][col] = kBoard[row][col];
                     kBoard[row][col] = ' ';
                     row -= 1;
-                    return tempObj;
+                    return 'a'; //'a' means empty space
                 }
-                //just return character
                 else
                 {
-                    return kBoard[row - 1][col];
+                    // Erase and return character
+                    if (kBoard[row - 1][col] != 'r')
+                    {
+                        int tempObj = kBoard[row - 1][col];
+
+                        kBoard[row - 1][col] = kBoard[row][col];
+                        kBoard[row][col] = ' ';
+                        row -= 1;
+                        return tempObj;
+                    }
+                    // just return character
+                    else
+                    {
+                        return kBoard[row - 1][col];
+                    }
                 }
+            }
+            else
+            {
+                return 'b'; //'b' means border blocking
             }
         }
         else
         {
-            return 'b'; //'b' means border blocking
+            // Move, zombie
         }
-        
     }
 
-    char Down(int& row, int& col)
+    char Down(int &row, int &col, int entity)
     {
-        if(kBoard[row][col] != kBoard[kRows][col])
+        if (entity == 0)
         {
-            if(kBoard[row + 1][col] == ' ')
+            if (kBoard[row][col] != kBoard[kRows][col])
             {
-                kBoard[row + 1][col] = kBoard[row][col];
-                kBoard[row][col] = ' ';
-                row += 1;
-                return 'a';
-            }
-            else
-            {
-                if(kBoard[row + 1][col] != 'r')
+                if (kBoard[row + 1][col] == ' ')
                 {
-                    int tempObj = kBoard[row + 1][col];
-
                     kBoard[row + 1][col] = kBoard[row][col];
                     kBoard[row][col] = ' ';
                     row += 1;
-                    return tempObj;
+                    return 'a';
                 }
                 else
                 {
-                    return kBoard[row - 1][col];
+                    if (kBoard[row + 1][col] != 'r')
+                    {
+                        int tempObj = kBoard[row + 1][col];
+
+                        kBoard[row + 1][col] = kBoard[row][col];
+                        kBoard[row][col] = ' ';
+                        row += 1;
+                        return tempObj;
+                    }
+                    else
+                    {
+                        return kBoard[row - 1][col];
+                    }
                 }
+            }
+            else
+            {
+                return 'b';
             }
         }
         else
         {
-            return 'b';
+
         }
     }
 
-    char Left(int& row, int& col)
+    char Left(int &row, int &col, int entity)
     {
-        if(kBoard[row][col] != kBoard[row][0])
+        if (entity == 0)
         {
-            if(kBoard[row][col - 1] == ' ')
+            if (kBoard[row][col] != kBoard[row][0])
             {
-                kBoard[row][col - 1] = kBoard[row][col];
-                kBoard[row][col] = ' ';
-                col -= 1;
-                return 'a';
-            }
-            else
-            {
-                if(kBoard[row][col - 1] != 'r')
+                if (kBoard[row][col - 1] == ' ')
                 {
-                    int tempObj = kBoard[row][col - 1];
-
                     kBoard[row][col - 1] = kBoard[row][col];
                     kBoard[row][col] = ' ';
                     col -= 1;
-                    return tempObj;
+                    return 'a';
                 }
                 else
                 {
-                    return kBoard[row][col - 1];
-                }
-            }
-        }
-        else
-        {
-            return 'b';
-        }
-    }
+                    if (kBoard[row][col - 1] != 'r')
+                    {
+                        int tempObj = kBoard[row][col - 1];
 
-    char Right(int& row, int& col)
-    {
-        if(kBoard[row][col] != kBoard[row][kColumns])
-        {
-            if(kBoard[row][col + 1] == ' ')
-            {
-                kBoard[row][col + 1] = kBoard[row][col];
-                kBoard[row][col] = ' ';
-                col += 1;
-                return 'a';
+                        kBoard[row][col - 1] = kBoard[row][col];
+                        kBoard[row][col] = ' ';
+                        col -= 1;
+                        return tempObj;
+                    }
+                    else
+                    {
+                        return kBoard[row][col - 1];
+                    }
+                }
             }
             else
             {
-                if(kBoard[row][col + 1] != 'r')
-                {
-                    int tempObj = kBoard[row][col + 1];
-
-                    kBoard[row][col + 1] = kBoard[row][col];
-                    kBoard[row][col] = ' ';
-                    col += 1;
-                    return tempObj;
-                }
-                else
-                {
-                    return kBoard[row + 1][col];
-                }
+                return 'b';
             }
         }
         else
         {
-            return 'b';
         }
     }
 
-    
-    void CreateGameBoard(int& alienRow, int& alienCol)
+    char Right(int &row, int &col, int entity)
+    {
+        if (entity == 0)
+        {
+            if (kBoard[row][col] != kBoard[row][kColumns])
+            {
+                if (kBoard[row][col + 1] == ' ')
+                {
+                    kBoard[row][col + 1] = kBoard[row][col];
+                    kBoard[row][col] = ' ';
+                    col += 1;
+                    return 'a';
+                }
+                else
+                {
+                    if (kBoard[row][col + 1] != 'r')
+                    {
+                        int tempObj = kBoard[row][col + 1];
+
+                        kBoard[row][col + 1] = kBoard[row][col];
+                        kBoard[row][col] = ' ';
+                        col += 1;
+                        return tempObj;
+                    }
+                    else
+                    {
+                        return kBoard[row + 1][col];
+                    }
+                }
+            }
+            else
+            {
+                return 'b';
+            }
+        }
+        else
+        {
+
+        }
+    }
+
+    void CreateGameBoard(int &alienRow, int &alienCol)
     {
 
         char objects[] = {'^', 'v', '<', '>', 'h', 'p', 'r', ' ', ' ', ' ', ' '};
@@ -194,7 +227,7 @@ namespace pf
             entities[i] = (i + 1) + '0';
         }
 
-        //random_shuffle(&entities[0], &entities[kZombies - 1]); --IGNORE THIS
+        // random_shuffle(&entities[0], &entities[kZombies - 1]); --IGNORE THIS
 
         // INSERT ENTITY INTO RANDOM CELLS:
 
