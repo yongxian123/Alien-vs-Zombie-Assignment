@@ -10,16 +10,23 @@ Please provide the YouTube link to your [Video Demo](https://youtube.com).
 
 List all the features completed.
 
-1. Cool Feature #1
-2. Cool Feature #2
-3. *add more*
+1. Randomly generate game board.
+2. Display & change game settings.
+3. Display Alien & zombie attributes.
+4. Alien & zombie movement.
+5. Zombie attack.
+6. Health pad & rock interaction.
+7. Help command.
 
 ### To Do
 
 List all the features not yet done. Remove this section if there is no incomplete requirements.
 
-1. Cool Feature #1
-2. *add more*
+1. Save and load game.
+2. Alien attack (attack pod & arrow).
+3. Trail object.
+4. Game flow.
+5. Quit game.
 
 ## Additional Features
 
@@ -29,23 +36,26 @@ Describe the additional features that has been implemented.
 
 List down the contribution of each group members.
 
-For example:
-
-### Tony Stark
+### Liew Yong Xian
 
 1. Randomly generate game board.
-2. *add more*
+2. Display & change game settings.
+3. Display alien & zombie attributes.
+4. Alien movement.
+5. Help command.
 
-### Steve Rogers
-
-1. Zombie movement and attack behaviour.
-2. *add more*
-
-### Dr. Strange
-
-1. Implement all game objects.
-2. *add more*
+### Lee Zheng Wei
+1. Zombie attack
+2. Zombie movement
+3. Health & rock objects interaction
 
 ## Problems Encountered & Solutions
 
-Describe the problems encountered and provide the solutions / plan for the solutions.
+1. Zombie unable to move after first turn.
+
+-Repetition in arithmetic expressions of zombies' row & column positions. 
+-Fixed after removal of arithmetic expressions on positions.
+
+2. Alien health unable to update in attributes after being attacked.
+
+-Alien object was not referenced in Zombie object parameters to cause any changes in Alien's health.
