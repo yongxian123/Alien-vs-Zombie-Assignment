@@ -12,6 +12,7 @@ namespace pf
     int ClearScreen();
     int Pause();
     
+    void rock(char chosen);
     void SetCoordinates(int& row, int& col);
     char Up(int& row, int& col, int entity);
     char Down(int& row, int& col, int entity);
