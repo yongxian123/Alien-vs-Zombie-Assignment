@@ -12,6 +12,7 @@ namespace pf
     int kRows = 5;
     int kColumns = 11;
     int alienRow, alienCol;
+    int rockRow, rockCol;
     vector<vector<char>> kBoard;
     vector<pair<int, int>> zombiePos;
 
@@ -44,6 +45,12 @@ namespace pf
         }
     }
 
+    void rock(char chosen)
+    {
+        kBoard[rockRow][rockCol] = chosen;
+    }
+    
+
     char Up(int &row, int &col, int entity)
     {
         if (entity == 0) // 0 means Alien, 1 means Zombies
@@ -72,6 +79,8 @@ namespace pf
                     // just return character
                     else
                     {
+                        rockRow = row - 1;
+                        rockCol = col;
                         return kBoard[row - 1][col];
                     }
                 }
@@ -90,10 +99,14 @@ namespace pf
                     kBoard[row - 1][col] = kBoard[row][col];
                     kBoard[row][col] = ' ';
                     row -= 1;
-                    return 'c'; //'a' means empty space
+                    return 'c'; 
                 }
             }
-            return 'c';
+            else
+            {
+                return 'd';
+            }
+            return 'd';
         }
     }
 
@@ -123,6 +136,8 @@ namespace pf
                     }
                     else
                     {
+                        rockRow = row + 1;
+                        rockCol = col;
                         return kBoard[row + 1][col];
                     }
                 }
@@ -144,7 +159,11 @@ namespace pf
                     return 'c';
                 }
             }
-            return 'c';
+            else
+            {
+                return 'd';
+            }
+            return 'd';
         }
     }
 
@@ -174,6 +193,8 @@ namespace pf
                     }
                     else
                     {
+                        rockRow = row;
+                        rockCol = col - 1;
                         return kBoard[row][col - 1];
                     }
                 }
@@ -195,7 +216,11 @@ namespace pf
                     return 'c';
                 }
             }
-            return 'c';
+            else
+            {
+                return 'd';
+            }
+            return 'd';
         }
     }
 
@@ -225,7 +250,9 @@ namespace pf
                     }
                     else
                     {
-                        return kBoard[row + 1][col];
+                        rockRow = row;
+                        rockCol = col +1;
+                        return kBoard[row][col + 1];
                     }
                 }
             }
@@ -246,7 +273,11 @@ namespace pf
                     return 'c';
                 }
             }
-            return 'c';
+            else
+            {
+                return 'd';
+            }
+            return 'd';
         }
     }
 
