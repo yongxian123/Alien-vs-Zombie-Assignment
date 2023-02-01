@@ -32,6 +32,7 @@ class Alien
         void changeTurn();
         void attributes();
         void showAttributes();
+        void changeHealth(int currhp);
         void addHealth();
         void addAttack();
         int getHealth();
@@ -50,7 +51,9 @@ class Zombie
         void getCoordinates();
         void attributes(int noOfZombie);
         void showAttributes();
-        void move();
+        bool move(int zombieNum);
+        void attack(int zombieNum, Alien &alien);
+        int getAttack();
 };
 
 class Game
@@ -64,10 +67,11 @@ public:
     bool command(Alien alien);
 };
 
-void Alien::addHealth()
+void Alien::changeHealth(int currhp)
 {
-    health += 20;
+    health = currhp;
 }
+
 
 void Alien::addAttack()
 {
@@ -122,15 +126,65 @@ void Alien::attributes()
 
 }
 
+int Zombie::getAttack()
+{
+    return atk;
+}
+
 void Zombie::getCoordinates()
 {
     pf::SetCoordinates(row, col);
 }
 
-void Zombie::move()
+bool Zombie::move(int ZombieNum)
 {
+    int zombieMove = rand() % 4;  // Generate a random number between 0 and 3
+    char success;
+    switch (zombieMove) {
+        case 0: // move up
+            success = pf::Up(row, col,1);
+            break;
+        case 1: // move down
+            success = pf::Down(row, col,1);
+            break;
+        case 2: // move left
+            success = pf::Left(row, col,1);
+            break;
+        case 3: // move right
+            success = pf::Right(row, col,1);
+            break;
+
+        if (success == 'c')
+        {
+            cout << "Zombie " << ZombieNum << " finds an empty space." << endl;
+            return true;
+        }
+        else
+        {
+            move(ZombieNum);
+            return false;
+        }
+    }
+    return false;
 
 }
+
+void Zombie::attack(int ZombieNum, Alien &alien)
+{
+ 
+    if (abs(row - pf::alienRow) <= range && abs(col - pf::alienCol) <= range) 
+    {
+        int currAlienHealth = alien.getHealth() - atk;
+        alien.changeHealth(currAlienHealth);
+        cout << "Zombie " << num << " attacked Alien with " << atk << " damage!" << endl << endl;
+    }
+    else
+    {
+        cout << "Zombie " << num << " could not reach the Alien!" << endl << endl;
+    }
+}
+
+
 
 void Zombie::changeTurn()
 {
@@ -252,7 +306,7 @@ void Game::checkObject(char obj, Alien alien)
     {
         cout << "Alien finds an arrow." << endl;
         alien.addAttack();
-        cout << "Alien's attack is increased by 20." << endl << endl;
+        cout << "WIP" << endl << endl;
     }
     else if(obj == 'h')
     {
@@ -264,7 +318,8 @@ void Game::checkObject(char obj, Alien alien)
         }
         else
         {
-            alien.addHealth();
+            int newHealth = alien.getHealth() - 20;
+            alien.changeHealth(newHealth);
             cout << "Alien's life is increased by 20." << endl << endl;
         }
          
@@ -278,8 +333,49 @@ void Game::checkObject(char obj, Alien alien)
     else if(obj == 'r')
     {
         cout << "Alien stumbles upon a rock." << endl;
-        cout << "(WIP)" << endl << endl;
+        
+        int rand_object = rand() % 6;
+        int chosen_object;
+        string nameOfObject;
+        switch(rand_object){
+            case 0:
+                chosen_object = 'h';
+                break;
+            case 1:
+                chosen_object = 'p';
+                break;
+            case 2:
+                chosen_object = '<';
+                break;
+            case 3:
+                chosen_object = '>';
+                break;
+            case 4:
+                chosen_object = 'v';
+                break;
+            case 5:
+                chosen_object = '^';
+                break;
+        }
+        pf::rock(chosen_object);
+        
+        if(chosen_object == 'h')
+        {
+            nameOfObject = "health pad";
+        }
+        else if(chosen_object == 'p')
+        {
+            nameOfObject = "attack pod";
+        }
+        else if(chosen_object == '<' || chosen_object == 'v' || chosen_object == '<' || chosen_object == '>')
+        {
+            nameOfObject = "arrow";
+        }
+
+        cout << "A " << nameOfObject << " was under the rock." << endl << endl;
+
     }
+    
 }
 
 bool Game::command(Alien alien)
@@ -437,7 +533,7 @@ bool Game::command(Alien alien)
         return false;
     }
 
-    return true;
+    return false;
 }
 
 bool Game::updateSettings()
@@ -572,7 +668,9 @@ int main()
         for(int i = 0; i < pf::kZombies; ++i)
         {
             zombies[i].changeTurn();
+            zombies[i].move(i);
             game.refreshBoard(alien, zombies);
+            zombies[i].attack(i, alien);
             zombies[i].changeTurn();
             pf::Pause();
         }
