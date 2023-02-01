@@ -12,8 +12,8 @@ List all the features completed.
 
 1. Randomly generate game board.
 2. Display & change game settings.
-3. Display Alien & zombie attributes.
-4. Alien & zombie movement.
+3. Display Alien & Zombie attributes.
+4. Alien & Zombie movement.
 5. Zombie attack.
 6. Health pad & rock interaction.
 7. Help command.
