@@ -2,7 +2,7 @@
 
 ## Video Demo
 
-Please provide the YouTube link to your [Video Demo](https://youtube.com).
+[Video Demo](https://youtu.be/5woTpNdhTVs).
 
 ## Minimum Requirements
 
@@ -15,7 +15,7 @@ List all the features completed.
 3. Display Alien & Zombie attributes.
 4. Alien & Zombie movement.
 5. Zombie attack.
-6. Health pad & rock interaction.
+6. Rock interaction.
 7. Help command.
 
 ### To Do
@@ -47,7 +47,7 @@ List down the contribution of each group members.
 ### Lee Zheng Wei
 1. Zombie attack
 2. Zombie movement
-3. Health & rock objects interaction
+3. Rock objects interaction
 
 ## Problems Encountered & Solutions
 
