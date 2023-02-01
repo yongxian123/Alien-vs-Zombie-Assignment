@@ -634,6 +634,7 @@ void createGameBoard()
 
 int main()
 {
+    pf::ClearScreen();
     cout << "Assignment (Part 1)" << endl;
     cout << "Let's Get Started!" << endl;
     
