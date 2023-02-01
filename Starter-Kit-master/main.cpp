@@ -485,7 +485,8 @@ bool Game::command(Alien alien)
     else if (comm_input == "help")
     {
        help();
-       pf::Pause();
+       command(alien);
+       return false;
     }
     else if (comm_input == "save")
     {
