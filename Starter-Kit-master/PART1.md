@@ -27,6 +27,8 @@ List all the features not yet done. Remove this section if there is no incomplet
 3. Trail object.
 4. Game flow.
 5. Quit game.
+6. Multiple Zombies movements & attacks.
+7. 
 
 ## Additional Features
 
