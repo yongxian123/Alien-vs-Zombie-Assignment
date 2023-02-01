@@ -1,5 +1,7 @@
 # Alien vs. Zombie
 
+![Alt text](https://cdn.discordapp.com/attachments/952502284741410867/1070331791405224046/alien_vs_zombie.png)
+
 Alien vs. Zombie is a puzzle game that consist of an Alien, which is the player, and Zombies which are the Alien's enemies.
 The goal of the game is to defeat all the Zombies by interacting with different game objects that appear on the game board.
 
