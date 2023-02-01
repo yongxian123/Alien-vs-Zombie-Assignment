@@ -1,11 +1,11 @@
 // *********************************************************
 // Course: TCP1101 PROGRAMMING FUNDAMENTALS
 // Year: Trimester 1, 2022/23 (T2215)
-// Lab: TxxL
+// Lab: T14L
 // Names: LIEW YONG XIAN | LEE ZHENG WEI
 // IDs: 1201103349 | 1201103467
 // Emails: 1201103349@student.mmu.edu.my | 1201103467@student.mmu.edu.my
-// Phones: 0163871550 | MEMBER_PHONE_2
+// Phones: 0163871550 | 0124742932
 // *********************************************************
 
 // TODO: Fill in the missing information above and delete this line.
@@ -33,7 +33,6 @@ class Alien
         void attributes();
         void showAttributes();
         void changeHealth(int currhp);
-        void addHealth();
         void addAttack();
         int getHealth();
         int getAttack();
