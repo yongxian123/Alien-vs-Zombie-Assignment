@@ -167,23 +167,24 @@ void Zombie::getCoordinates(int zombieNum)
 
 bool Zombie::move(int ZombieNum)
 {
+    string dir;
     int zombieMove = rand() % 4;  // Generate a random number between 0 and 3
     char success;
     switch (zombieMove) {
         case 0: // move up
-            cout << "Zombie " << ZombieNum + 1 << " moves up." << endl << endl;
+            dir = "up";
             success = pf::Up(row, col, 1, false);
             break;
         case 1: // move down
-            cout << "Zombie " << ZombieNum + 1 << " moves down." << endl << endl;
+            dir = "down";
             success = pf::Down(row, col, 1, false);
             break;
         case 2: // move left
-            cout << "Zombie " << ZombieNum + 1 << " moves left." << endl << endl;
+            dir = "left";
             success = pf::Left(row, col, 1, false);
             break;
         case 3: // move right
-            cout << "Zombie " << ZombieNum + 1 << " moves right." << endl << endl;
+            dir = "right";
             success = pf::Right(row, col, 1, false);
             break;
     }
@@ -199,8 +200,9 @@ bool Zombie::move(int ZombieNum)
         return false;
     }
 
-    return true;
+    cout << "Zombie " << ZombieNum + 1 << " moves " << dir << "." << endl << endl;
 
+    return true;
 }
 
 void Zombie::attack(int ZombieNum, Alien &alien)
@@ -350,6 +352,7 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
         {
             cout << "A border is blocking the way!" << endl << endl;
             cout << "Trails are randomized into random objects." << endl << endl;
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
@@ -365,13 +368,14 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
             zombies[numOfZombie - 1].changeHealth(currhp);
             cout << "Alien attacked Zombie " << numOfZombie << " with " << alien.getAttack() << " damage!" << endl;
             zombies[numOfZombie - 1].checkAlive();
-            
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
         else if(arrowObj == 'r')
         {
             checkObject(arrowObj, alien, zombies);
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
@@ -393,6 +397,7 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
         {
             cout << "A border is blocking the way!" << endl << endl;
             cout << "Trails are randomized into random objects." << endl << endl;
+            alien.changeAttack(0);
             pf::Pause();
             return false;
         }
@@ -412,13 +417,14 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
             zombies[numOfZombie - 1].changeHealth(currhp);
             cout << "Alien attacked Zombie " << numOfZombie << " with " << alien.getAttack() << " damage!" << endl;
             zombies[numOfZombie - 1].checkAlive();
-            
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
         else if(arrowObj == 'r')
         {
             checkObject(arrowObj, alien, zombies);
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
@@ -440,6 +446,7 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
         {
             cout << "A border is blocking the way!" << endl << endl;
             cout << "Trails are randomized into random objects." << endl << endl;
+            alien.changeAttack(0);
             pf::Pause();
             return false;
         }
@@ -459,13 +466,14 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
             zombies[numOfZombie - 1].changeHealth(currhp);
             cout << "Alien attacked Zombie " << numOfZombie << " with " << alien.getAttack() << " damage!" << endl;
             zombies[numOfZombie - 1].checkAlive();
-            
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
         else if(arrowObj == 'r')
         {
             checkObject(arrowObj, alien, zombies);
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
@@ -487,6 +495,7 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
         {
             cout << "A border is blocking the way!" << endl << endl;
             cout << "Trails are randomized into random objects." << endl << endl;
+            alien.changeAttack(0);
             pf::Pause();
             return false;
         }
@@ -506,13 +515,14 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
             zombies[numOfZombie - 1].changeHealth(currhp);
             cout << "Alien attacked Zombie " << numOfZombie << " with " << alien.getAttack() << " damage!" << endl;
             zombies[numOfZombie - 1].checkAlive();
-            
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
         else if(arrowObj == 'r')
         {
             checkObject(arrowObj, alien, zombies);
+            alien.changeAttack(0);
             pf::Pause();
             return true;
         }
@@ -528,88 +538,6 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
     }
 
     return true;
-}
-
-void Game::checkObject(char obj, Alien& alien, Zombie zombies[])
-{
-    if(obj == '<' || obj == '>' || obj == '^' || obj == 'v')
-    {
-        arrowMove = true;
-        arrowObj = obj;
-
-        cout << "Alien finds an arrow." << endl;
-        int curratk = alien.getAttack() + 20;
-        alien.changeAttack(curratk);
-        cout << "Alien's attack has increased by 20!" << endl << endl;
-    }
-    else if(obj == 'h')
-    {
-        cout << "Alien finds a health pad." << endl;
-
-        if(alien.getHealth() == 100)
-        {
-            cout << "Alien's health is already full." << endl << endl;
-        }
-        else
-        {
-            int newHealth = alien.getHealth() + 20;
-            alien.changeHealth(newHealth);
-            cout << "Alien's life is increased by 20." << endl << endl;
-        }
-         
-        
-    }
-    else if(obj == 'p')
-    {
-        cout << "Alien finds a pod." << endl;
-        cout << "(WIP)" << endl << endl;
-    }
-    else if(obj == 'r')
-    {
-        cout << "Alien stumbles upon a rock." << endl;
-        
-        int rand_object = rand() % 6;
-        int chosen_object;
-        string nameOfObject;
-        switch(rand_object){
-            case 0:
-                chosen_object = 'h';
-                break;
-            case 1:
-                chosen_object = 'p';
-                break;
-            case 2:
-                chosen_object = '<';
-                break;
-            case 3:
-                chosen_object = '>';
-                break;
-            case 4:
-                chosen_object = 'v';
-                break;
-            case 5:
-                chosen_object = '^';
-                break;
-        }
-        pf::rock(chosen_object);
-        
-        if(chosen_object == 'h')
-        {
-            nameOfObject = "health pad";
-        }
-        else if(chosen_object == 'p')
-        {
-            nameOfObject = "attack pod";
-        }
-        else if(chosen_object == '<' || chosen_object == 'v' || chosen_object == '<' || chosen_object == '>')
-        {
-            nameOfObject = "arrow";
-        }
-
-        cout << "A " << nameOfObject << " was under the rock." << endl << endl;
-
-    }
-    
 }
 
 bool Game::command(Alien& alien, Zombie zombies[])
@@ -831,7 +759,6 @@ bool Game::command(Alien& alien, Zombie zombies[])
 
     if(arrowMove)
     {
-        alien.changeAttack(0);
         refreshBoard(alien, zombies);
         arrow(obj, alien, zombies);
         pf::resetTrail();
