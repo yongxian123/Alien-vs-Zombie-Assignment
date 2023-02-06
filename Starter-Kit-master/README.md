@@ -67,7 +67,7 @@ Game Flow:
 
 ## Contributors
 
--Liew Yong Xian
--Lee Zheng Wei
+-Liew Yong Xian.
+-Lee Zheng Wei.
 
 
