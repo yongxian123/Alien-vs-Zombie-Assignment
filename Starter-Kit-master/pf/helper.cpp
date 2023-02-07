@@ -273,7 +273,7 @@ namespace pf
     {
 
         
-        char entities[kZombies - 1] = {};
+        char entities[kZombies] = {};
 
         kBoard.resize(kRows); // resize Y or ROWS
         for (int i = 0; i < kRows; ++i)
