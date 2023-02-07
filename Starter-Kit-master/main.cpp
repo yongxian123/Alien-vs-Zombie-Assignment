@@ -540,6 +540,88 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
     return true;
 }
 
+void Game::checkObject(char obj, Alien& alien, Zombie zombies[])
+{
+    if(obj == '<' || obj == '>' || obj == '^' || obj == 'v')
+    {
+        arrowMove = true;
+        arrowObj = obj;
+
+        cout << "Alien finds an arrow." << endl;
+        int curratk = alien.getAttack() + 20;
+        alien.changeAttack(curratk);
+        cout << "Alien's attack has increased by 20!" << endl << endl;
+    }
+    else if(obj == 'h')
+    {
+        cout << "Alien finds a health pad." << endl;
+
+        if(alien.getHealth() == 100)
+        {
+            cout << "Alien's health is already full." << endl << endl;
+        }
+        else
+        {
+            int newHealth = alien.getHealth() + 20;
+            alien.changeHealth(newHealth);
+            cout << "Alien's life is increased by 20." << endl << endl;
+        }
+         
+        
+    }
+    else if(obj == 'p')
+    {
+        cout << "Alien finds a pod." << endl;
+        cout << "(WIP)" << endl << endl;
+    }
+    else if(obj == 'r')
+    {
+        cout << "Alien stumbles upon a rock." << endl;
+        
+        int rand_object = rand() % 6;
+        int chosen_object;
+        string nameOfObject;
+        switch(rand_object){
+            case 0:
+                chosen_object = 'h';
+                break;
+            case 1:
+                chosen_object = 'p';
+                break;
+            case 2:
+                chosen_object = '<';
+                break;
+            case 3:
+                chosen_object = '>';
+                break;
+            case 4:
+                chosen_object = 'v';
+                break;
+            case 5:
+                chosen_object = '^';
+                break;
+        }
+        pf::rock(chosen_object);
+        
+        if(chosen_object == 'h')
+        {
+            nameOfObject = "health pad";
+        }
+        else if(chosen_object == 'p')
+        {
+            nameOfObject = "attack pod";
+        }
+        else if(chosen_object == '<' || chosen_object == 'v' || chosen_object == '<' || chosen_object == '>')
+        {
+            nameOfObject = "arrow";
+        }
+
+        cout << "A " << nameOfObject << " was under the rock." << endl << endl;
+
+    }
+    
+}
+
 bool Game::command(Alien& alien, Zombie zombies[])
 {
     char obj;
