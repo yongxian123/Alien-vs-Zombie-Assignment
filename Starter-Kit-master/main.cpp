@@ -14,6 +14,7 @@
 #include <string>
 #include <algorithm>
 #include <cmath>
+#include <climits>
 
 using namespace std;
 
@@ -813,17 +814,14 @@ bool Game::command(Alien& alien, Zombie zombies[])
         {
             newDir = '>';
         }
-        else
-        {
-            cout << "Invalid Direction! There is only up/down/left/right." << endl << endl;
-            command(alien, zombies);
-            return false;
-        }
+        
 
         bool insertArrow = pf::changeArrow(5 - newRow, newCol - 1, newDir);
         if (insertArrow == false)
         {
-            cout << "The arrow in this row and column does not exist!" << endl << endl;
+            cout << "The arrow in this row, column or direction does not exist!" << endl << endl;
+            command(alien, zombies);
+            return false;
         }
     }
     else if (comm_input == "help")
