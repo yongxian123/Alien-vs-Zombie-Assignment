@@ -41,6 +41,11 @@ namespace pf
 
     bool changeArrow(int row, int col, char dir)
     {
+        if (dir != '^' && dir != 'v' && dir != '<' && dir != '>')
+        {
+            return false;
+        }
+
         if (kBoard[row][col] == '^' || kBoard[row][col] == 'v' 
          || kBoard[row][col] == '<' || kBoard[row][col] == '>')
         {
@@ -273,7 +278,7 @@ namespace pf
     {
 
         
-        char entities[kZombies] = {};
+        char entities[kZombies];
 
         kBoard.resize(kRows); // resize Y or ROWS
         for (int i = 0; i < kRows; ++i)
