@@ -1,5 +1,6 @@
 #ifndef PF_HELPER_H
 #define PF_HELPER_H
+#include <vector>
 
 namespace pf
 {
@@ -8,6 +9,7 @@ namespace pf
     extern int kZombies;
     extern int alienRow;
     extern int alienCol;
+    extern std::vector<std::vector<char>> kBoard;
  
     int ClearScreen();
     int Pause();
