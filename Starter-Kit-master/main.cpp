@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -54,6 +55,8 @@ class Zombie
         void attack(int zombieNum, Alien &alien);
         int getHealth();
         int getAttack();
+        int getRow();
+        int getCol();     
 };
 
 class Game
@@ -70,6 +73,7 @@ public:
     void checkObject(char obj, Alien& alien, Zombie zombies[]);
     void help();
     bool command(Alien& alien, Zombie zombies[]);
+    int AttackPod(Zombie zombies[]);
 };
 
 
@@ -336,6 +340,36 @@ void Game::refreshBoard(Alien alien, Zombie zombies[])
     cout << endl;
 }
 
+int Game::AttackPod(Zombie zombies[]) 
+{
+  int min_distance = INT_MAX;
+  int target_index = 0;
+  int distance = INT_MAX;
+  
+  // find the nearest zombie
+  for (int i = 0; i < pf::kZombies; i++) 
+  {
+    int zRow = zombies[i].getRow();
+    int zCol = zombies[i].getCol();
+    int aRow = pf::alienRow;
+    int aCol = pf::alienCol;
+
+    //zombie
+    int tempDistance = sqrt((zCol - aCol)*(zCol - aCol) + (zRow - aRow)*(zRow - aRow));
+    if (tempDistance < distance) 
+    {
+      distance = tempDistance;
+      target_index = i;
+    }
+  }
+  
+  // deal damage to the nearest zombie 
+    int currZombieHealth = zombies[target_index].getHealth() - 10;
+    zombies[target_index].changeHealth(currZombieHealth);
+    return target_index;
+    
+  }
+
 bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
 {
 
@@ -572,7 +606,9 @@ void Game::checkObject(char obj, Alien& alien, Zombie zombies[])
     else if(obj == 'p')
     {
         cout << "Alien finds a pod." << endl;
-        cout << "(WIP)" << endl << endl;
+        int index = AttackPod(zombies);
+        cout << "The nearest zombie " << index + 1 << " takes 10 damage. " << endl;
+        zombies[index].checkAlive();
     }
     else if(obj == 'r')
     {
@@ -818,7 +854,7 @@ bool Game::command(Alien& alien, Zombie zombies[])
         {
             cout << endl;
             cout << "Goodbye!";
-            return false;
+            abort();
         }
         else if (quit == 'n')
         {
