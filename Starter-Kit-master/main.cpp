@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cmath>
 #include <climits>
+#include <fstream>
 
 using namespace std;
 
@@ -29,6 +30,16 @@ class Alien
         int atk = 0;
         bool turn = false;
     public:
+        friend ofstream& operator<<(ofstream& file, const Alien& alien)
+        {
+            file << alien.health << " " << alien.atk << " "<< alien.turn << " " << pf::alienRow << " " << pf::alienCol << endl;
+            return file;
+        }
+        friend ifstream& operator>>(ifstream& readFile, Alien& alien)
+        {
+            readFile >> alien.health >> alien.atk >> alien.turn;
+            return readFile;
+        }
         void changeTurn();
         void attributes();
         void showAttributes();
@@ -46,6 +57,16 @@ class Zombie
         int health, atk, range, num, row, col;
         bool turn = false;
     public:
+        friend ofstream& operator<<(ofstream& file, const Zombie& zombies)
+        {
+            file << zombies.num << " " << zombies.health << " " << zombies.atk << " " << zombies.range << " " << zombies.row << " " << zombies.col << endl;
+            return file;
+        }
+        friend ifstream& operator>>(ifstream& readFile, Zombie& zombies)
+        {
+            readFile >> zombies.num >> zombies.health >> zombies.atk >> zombies.range >> zombies.row >> zombies.col;
+            return readFile;
+        }
         void checkAlive();
         void changeHealth(int currhp);
         void changeTurn();
@@ -66,15 +87,16 @@ private:
     bool arrowMove = false;
     char arrowObj;
 public:
-    
-    bool arrow(char& obj, Alien& alien, Zombie zombies[]);
+    string save(Alien& alien, vector<Zombie> &zombies);
+    string load(Alien& alien, vector<Zombie> &zombies);
+    bool arrow(char& obj, Alien& alien, vector<Zombie>& zombies);
     void displaySettings();
     bool updateSettings();
-    void refreshBoard(Alien alien, Zombie zombies[]);
-    void checkObject(char obj, Alien& alien, Zombie zombies[]);
+    void refreshBoard(Alien alien, vector<Zombie>& zombies);
+    void checkObject(char obj, Alien& alien, vector<Zombie>& zombies);
     void help();
-    bool command(Alien& alien, Zombie zombies[]);
-    int AttackPod(Zombie zombies[]);
+    bool command(Alien& alien, vector<Zombie>& zombies);
+    int AttackPod(vector<Zombie>& zombies);
 };
 
 
@@ -137,6 +159,91 @@ void Alien::attributes()
 
 }
 
+string Game::load(Alien& alien, vector<Zombie> &zombies)
+{
+    string fileName;
+    cout << "Enter file name to load: ";
+    cin >> fileName;
+
+    ifstream readFile(fileName);
+
+    readFile >> pf::kZombies;
+    zombies.resize(pf::kZombies);
+    readFile >> alien;
+
+    string line;
+    int lineNum = 2;
+    while(getline(readFile, line))
+    {
+        ++lineNum;
+        if (lineNum == 3)
+        {
+            break;
+        }
+    }
+
+    for(int i = 0; i < pf::kZombies; ++i)
+    {
+        readFile >> zombies[i];
+    }
+
+    readFile >> pf::kRows >> pf::kColumns;
+    pf::kBoard.clear();
+    pf::kBoard.resize(pf::kRows);
+
+    int ch;
+
+    for(int i = 0; i < pf::kRows; ++i)
+    {
+        pf::kBoard[i].resize(pf::kColumns);
+        for(int j = 0; j < pf::kColumns; ++j)
+        {
+            readFile >> ch;
+            pf::kBoard[i][j] = char(ch);
+        }
+    }
+
+    readFile.close();
+    return fileName;
+}
+
+string Game::save(Alien& alien, vector<Zombie> &zombies)
+{
+    string fileName;
+
+    cout << "Enter file name to save current game (Type '0' to go back): ";
+    cin >> fileName;
+    cout << endl;
+
+    if(fileName == "0")
+    {
+        return "exit";
+    }
+
+    ofstream file(fileName);
+    file << pf::kZombies;
+    file << endl;
+    file << alien;
+
+    for(int i = 0; i < pf::kZombies; ++i)
+    {
+        file << zombies[i];
+    }
+
+    file << pf::kRows << " " << pf::kColumns << endl;
+
+    for(int i = 0; i < pf::kRows; ++i)
+    {
+        for(int j = 0; j < pf::kColumns; ++j)
+        {
+            file << int(pf::kBoard[i][j]) << ' ';
+        }
+        file << endl;
+    }
+    file.close();
+    return fileName;
+}
+
 void Zombie::checkAlive()
 {
     if(health <= 0)
@@ -194,12 +301,7 @@ bool Zombie::move(int ZombieNum)
             break;
     }
 
-    if (success == 'c')
-    {
-        //cout << "Zombie " << ZombieNum + 1 << " finds an empty space." << endl;
-        return true;
-    }
-    else if (success == 'd')
+    if (success == 'd')
     {
         move(ZombieNum);
         return false;
@@ -329,7 +431,7 @@ void Game::help()
     cout << "9. quit    - Quit the game." << endl;
 }
 
-void Game::refreshBoard(Alien alien, Zombie zombies[])
+void Game::refreshBoard(Alien alien, vector<Zombie>& zombies)
 {
     pf::ClearScreen();
     pf::ShowGameBoard();
@@ -341,7 +443,7 @@ void Game::refreshBoard(Alien alien, Zombie zombies[])
     cout << endl;
 }
 
-int Game::AttackPod(Zombie zombies[]) 
+int Game::AttackPod(vector<Zombie>& zombies) 
 {
   int min_distance = INT_MAX;
   int target_index = 0;
@@ -371,7 +473,7 @@ int Game::AttackPod(Zombie zombies[])
     
   }
 
-bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
+bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
 {
 
     if(arrowObj == '<' || arrowObj == '>' || arrowObj == '^' || arrowObj == 'v')
@@ -575,7 +677,7 @@ bool Game::arrow(char& obj, Alien& alien, Zombie zombies[])
     return true;
 }
 
-void Game::checkObject(char obj, Alien& alien, Zombie zombies[])
+void Game::checkObject(char obj, Alien& alien, vector<Zombie>& zombies)
 {
     if(obj == '<' || obj == '>' || obj == '^' || obj == 'v')
     {
@@ -659,7 +761,7 @@ void Game::checkObject(char obj, Alien& alien, Zombie zombies[])
     
 }
 
-bool Game::command(Alien& alien, Zombie zombies[])
+bool Game::command(Alien& alien, vector<Zombie>& zombies)
 {
     char obj;
     string comm_input;
@@ -832,15 +934,38 @@ bool Game::command(Alien& alien, Zombie zombies[])
     }
     else if (comm_input == "save")
     {
-        cout << "Feature is not added to the game yet." << endl << endl;
+        string fileName = save(alien, zombies);
+        cout << "Game file is saved successfully! (" << fileName << ")" << endl << endl;
         command(alien, zombies);
         return false;
     }
     else if (comm_input == "load")
     {
-        cout << "Feature is not added to the game yet." << endl << endl;
-        command(alien, zombies);
-        return false;
+        char choice;
+        cout << "Do you want to save current file? (y/n): ";
+        cin >> choice;
+        if (choice == 'y')
+        {
+            string fileName = save(alien, zombies);
+            cout << "Game file is saved successfully! (" << fileName << ")" << endl;
+
+            string fileName2 = load(alien, zombies);
+            cout << fileName2 << " was successfully loaded!" << endl << endl;
+            pf::Pause();
+            refreshBoard(alien, zombies);
+        }
+        else if (choice == 'n')
+        {
+            string fileName = load(alien, zombies);
+            cout << fileName << " was successfully loaded!" << endl << endl;
+            pf::Pause();
+            refreshBoard(alien, zombies);
+        }
+        else
+        {
+            command(alien, zombies);
+            return false;
+        }
     }
     else if (comm_input == "quit")
     {
@@ -995,7 +1120,8 @@ int main()
     createGameBoard();
 
     Alien alien;
-    Zombie zombies[pf::kZombies];
+    vector<Zombie> zombies;
+    zombies.resize(pf::kZombies);
 
     cout << pf::kZombies << endl;
     alien.showAttributes();
