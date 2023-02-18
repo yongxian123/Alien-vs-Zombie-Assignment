@@ -1172,10 +1172,10 @@ bool Game::updateSettings()
     cout << "Enter columns => ";
     cin >> tempColumn;
 
-    if (tempRow % 2 == 0 || tempColumn % 2 == 0)
+    if (tempRow % 2 == 0 || tempColumn % 2 == 0 || tempRow < 5 || tempColumn < 11)
     {
         cout << endl;
-        cout << "Board dimensions must be in odd numbers!" << endl;
+        cout << "Board dimensions must be in odd numbers and at least 5 rows 11 columns!" << endl;
         pf::Pause();
         pf::ClearScreen();
         updateSettings();
@@ -1195,9 +1195,9 @@ bool Game::updateSettings()
     cout << "Enter number of zombies => ";
     cin >> tempZombies;
 
-    if (tempZombies > 5)
+    if (tempZombies > 9 || tempZombies <= 0)
     {
-        cout << "*Only 9 zombies maximum are allowed!" << endl;
+        cout << "*Only 9 zombies maximum are allowed and at least 1 zombie required!" << endl;
         pf::Pause();
         pf::ClearScreen();
         updateSettings();
