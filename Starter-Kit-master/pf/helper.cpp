@@ -285,7 +285,7 @@ namespace pf
 
     void CreateGameBoard(int &alienRow, int &alienCol)
     {
-
+        srand(time(NULL));
         
         char entities[kZombies];
 
