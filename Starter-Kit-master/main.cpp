@@ -1261,7 +1261,7 @@ void createGameBoard()
 bool gameflow()
 {
     pf::ClearScreen();
-    cout << "Assignment (Part 1)" << endl;
+    cout << "Assignment (Part 1 & Part 2)" << endl;
     cout << "Let's Get Started!" << endl;
 
     //START SCREEN:
