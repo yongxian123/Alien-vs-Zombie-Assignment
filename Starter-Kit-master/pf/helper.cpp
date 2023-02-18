@@ -148,7 +148,10 @@ namespace pf
         }
     }
 
-    void ZombieMovement(int &row, int& col, int addRow, int addCol)
+    void ZombieMovement((kBoard[row + addRow][col + addCol] != 'A' && kBoard[row + addRow][col + addCol] != '1' && kBoard[row + addRow][col + addCol] != '2'
+        && kBoard[row + addRow][col + addCol] != '3' && kBoard[row + addRow][col + addCol] != '4' && kBoard[row + addRow][col + addCol] != '5'
+        && kBoard[row + addRow][col + addCol] != '6' && kBoard[row + addRow][col + addCol] != '7' && kBoard[row + addRow][col + addCol] != '8'
+        && kBoard[row + addRow][col + addCol] != '9'))
     {
         if (kBoard[row + addRow][col + addCol] != 'A')
         {
