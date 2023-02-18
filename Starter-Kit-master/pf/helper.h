@@ -11,6 +11,7 @@ namespace pf
     extern int alienRow;
     extern int alienCol;
     extern std::vector<std::vector<char>> kBoard;
+    extern std::vector<std::pair<int,int>> zombiePos;
  
     int ClearScreen();
     int Pause();

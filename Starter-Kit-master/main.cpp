@@ -47,6 +47,7 @@ class Alien
         void changeAttack(int curratk);
         int getHealth();
         int getAttack();
+        void changeTrue();
         
 
 };
@@ -78,7 +79,8 @@ class Zombie
         int getHealth();
         int getAttack();
         int getRow();
-        int getCol();     
+        int getCol();    
+        void changeTrue(); 
 };
 
 class Game
@@ -98,6 +100,7 @@ public:
     bool command(Alien& alien, vector<Zombie>& zombies);
     int AttackPod(vector<Zombie>& zombies);
     void changeAlive();
+    bool repeatGame(Alien &alien, vector<Zombie> &zombies);
 };
 
 
@@ -134,6 +137,11 @@ void Alien::changeTurn()
     {
         turn = false;
     }
+}
+
+void Alien::changeTrue()
+{
+    turn = false;
 }
 
 void Alien::showAttributes()
@@ -353,6 +361,11 @@ void Zombie::changeTurn()
     }
 }
 
+void Zombie::changeTrue()
+{
+    turn = false;
+}
+
 void Zombie::showAttributes()
 {
     if(turn == true)
@@ -461,7 +474,7 @@ int Game::AttackPod(vector<Zombie> &zombies)
     int target_index = 0;
     int distance = INT_MAX;
     vector<int> sameMagnitude;
-    int sameDistance = 0;
+    int sameDistance = INT_MAX;
 
     // find the nearest zombie
     for (int i = 0; i < pf::kZombies; i++)
@@ -501,6 +514,35 @@ int Game::AttackPod(vector<Zombie> &zombies)
     int currZombieHealth = zombies[target_index].getHealth() - 10;
     zombies[target_index].changeHealth(currZombieHealth);
     return target_index;
+}
+
+bool Game::repeatGame(Alien &alien, vector<Zombie> &zombies)
+{
+    char ans;
+    cout << "Do you want to play again?(y/n) " << endl;
+    cin >> ans;
+    if (ans == 'y')
+    {
+        alien.changeTrue();
+        for (int i = 0; i < pf::kZombies; i++)
+        {
+            zombies[i].changeTrue();
+        }
+
+        return true;
+    }
+    else if (ans == 'n')
+    {
+        cout << "Goodbye!" << endl;
+        abort();
+    }
+    else
+    {
+        cout << "Invalid input! Please enter y or n!" << endl;
+        repeatGame(alien, zombies);
+        return false;
+    }
+    return false;
 }
 
 bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
@@ -1140,19 +1182,21 @@ void createGameBoard()
     
 }
 
-int main()
+bool gameflow()
 {
     pf::ClearScreen();
     cout << "Assignment (Part 1)" << endl;
     cout << "Let's Get Started!" << endl;
-    
-    //TEMPORARY START SCREEN:
+
+    // TEMPORARY START SCREEN:
     Game game;
     game.displaySettings();
     game.changeAlive();
     pf::Pause();
 
-    //BOARD DISPLAY, RANDOMIZE AND SHOW ATTRIBUTES:
+    // BOARD DISPLAY, RANDOMIZE AND SHOW ATTRIBUTES:
+    pf::kBoard.clear();
+    pf::zombiePos.clear();
     createGameBoard();
 
     Alien alien;
@@ -1161,7 +1205,7 @@ int main()
 
     cout << pf::kZombies << endl;
     alien.showAttributes();
-    for(int i = 0; i < pf::kZombies; ++i)
+    for (int i = 0; i < pf::kZombies; ++i)
     {
         cout << i << endl;
         zombies[i].getCoordinates(i);
@@ -1171,8 +1215,8 @@ int main()
     }
     cout << endl;
 
-    //GAME TURNS LOOPING UNTIL WIN OR LOSE:
-    
+    // GAME TURNS LOOPING UNTIL WIN OR LOSE:
+
     while (true)
     {
         if (alien.getHealth() > 0)
@@ -1204,16 +1248,31 @@ int main()
                 else
                 {
                     cout << "You Win!" << endl;
-                    abort();
+                    bool restart = game.repeatGame(alien, zombies);
+                    if (restart == true)
+                    {
+                        gameflow();
+                        return false;
+                    }
                 }
             }
         }
         else
         {
             cout << "Game Over! Better luck next time!" << endl;
-            // game.repeatGame();
-            abort();
+            bool restart = game.repeatGame(alien, zombies);
+            if (restart == true)
+            {
+                gameflow();
+                return false;
+            }
+            
         }
     }
+    return false;
+}
 
+int main()
+{
+   gameflow();
 }
