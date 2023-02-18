@@ -15,6 +15,7 @@ namespace pf
     int rockRow, rockCol;
     vector<vector<char>> kBoard;
     vector<pair<int, int>> zombiePos;
+    int alive = 0;
 
     char objects[] = {'^', 'v', '<', '>', 'h', 'p', 'r', ' ', ' ', ' ', ' '};
     char objectsNoSpace[] = {'^', 'v', '<', '>', 'h', 'p', 'r'};
@@ -60,7 +61,7 @@ namespace pf
 
     void deleteEntity(int row, int col)
     {
-        kBoard[row][col] = kBoard[alienRow][alienCol];
+        kBoard[row][col] = ' ';
     } 
 
     void SetCoordinates(int &row, int &col, int num)

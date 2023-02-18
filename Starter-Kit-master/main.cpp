@@ -97,6 +97,7 @@ public:
     void help();
     bool command(Alien& alien, vector<Zombie>& zombies);
     int AttackPod(vector<Zombie>& zombies);
+    void changeAlive();
 };
 
 
@@ -244,12 +245,23 @@ string Game::save(Alien& alien, vector<Zombie> &zombies)
     return fileName;
 }
 
+int Zombie::getRow()
+{
+    return row;
+}
+
+int Zombie::getCol()
+{
+    return col;
+}
+
 void Zombie::checkAlive()
 {
     if(health <= 0)
     {
         cout << "Zombie " << num << " died from the attack!" << endl << endl;
         pf::deleteEntity(row, col);
+        pf::alive--;
     }
     else
     {
@@ -443,35 +455,53 @@ void Game::refreshBoard(Alien alien, vector<Zombie>& zombies)
     cout << endl;
 }
 
-int Game::AttackPod(vector<Zombie>& zombies) 
+int Game::AttackPod(vector<Zombie> &zombies)
 {
-  int min_distance = INT_MAX;
-  int target_index = 0;
-  int distance = INT_MAX;
-  
-  // find the nearest zombie
-  for (int i = 0; i < pf::kZombies; i++) 
-  {
-    int zRow = zombies[i].getRow();
-    int zCol = zombies[i].getCol();
-    int aRow = pf::alienRow;
-    int aCol = pf::alienCol;
+    int min_distance = INT_MAX;
+    int target_index = 0;
+    int distance = INT_MAX;
+    vector<int> sameMagnitude;
+    int sameDistance = 0;
 
-    //zombie
-    int tempDistance = sqrt((zCol - aCol)*(zCol - aCol) + (zRow - aRow)*(zRow - aRow));
-    if (tempDistance < distance) 
+    // find the nearest zombie
+    for (int i = 0; i < pf::kZombies; i++)
     {
-      distance = tempDistance;
-      target_index = i;
+        if (zombies[i].getHealth() > 0)
+        {
+            int zRow = zombies[i].getRow();
+            int zCol = zombies[i].getCol();
+            int aRow = pf::alienRow;
+            int aCol = pf::alienCol;
+
+            // zombie
+            int tempDistance = sqrt((zCol - aCol) * (zCol - aCol) + (zRow - aRow) * (zRow - aRow));
+            if (tempDistance < distance)
+            {
+                distance = tempDistance;
+                target_index = i;
+            }
+            else if (tempDistance == distance)
+            {
+                sameMagnitude.push_back(i);
+                sameDistance = tempDistance;
+            }
+        }
+        else
+        {
+            continue;
+        }
     }
-  }
-  
-  // deal damage to the nearest zombie 
+
+    if (sameDistance < distance)
+    {
+        int randZombie = rand() % sameMagnitude.size();
+        target_index = sameMagnitude[randZombie];
+    }
+    // deal damage to the nearest zombie
     int currZombieHealth = zombies[target_index].getHealth() - 10;
     zombies[target_index].changeHealth(currZombieHealth);
     return target_index;
-    
-  }
+}
 
 bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
 {
@@ -1066,6 +1096,11 @@ bool Game::updateSettings()
     return true;
 }
 
+void Game::changeAlive()
+{
+    pf::alive = pf::kZombies;
+}
+
 void Game::displaySettings()
 {
     char inputChar;
@@ -1114,6 +1149,7 @@ int main()
     //TEMPORARY START SCREEN:
     Game game;
     game.displaySettings();
+    game.changeAlive();
     pf::Pause();
 
     //BOARD DISPLAY, RANDOMIZE AND SHOW ATTRIBUTES:
@@ -1137,23 +1173,47 @@ int main()
 
     //GAME TURNS LOOPING UNTIL WIN OR LOSE:
     
-    while(true)
-    {   
-        alien.changeTurn();
-        game.refreshBoard(alien, zombies);
-        alien.changeTurn();
-        game.command(alien, zombies);
-        
-        for(int i = 0; i < pf::kZombies; ++i)
+    while (true)
+    {
+        if (alien.getHealth() > 0)
         {
-            zombies[i].changeTurn();
+            alien.changeTurn();
             game.refreshBoard(alien, zombies);
-            zombies[i].move(i);
-            pf::Pause();
-            game.refreshBoard(alien, zombies);
-            zombies[i].attack(i, alien);
-            zombies[i].changeTurn();
-            pf::Pause();
+            alien.changeTurn();
+            game.command(alien, zombies);
+
+            for (int i = 0; i < pf::kZombies; ++i)
+            {
+                if (pf::alive > 0)
+                {
+                    zombies[i].changeTurn();
+                    game.refreshBoard(alien, zombies);
+                    if (zombies[i].getHealth() > 0)
+                    {
+                        zombies[i].move(i);
+                    }
+                    pf::Pause();
+                    game.refreshBoard(alien, zombies);
+                    if (zombies[i].getHealth() > 0)
+                    {
+                        zombies[i].attack(i, alien);
+                    }
+                    zombies[i].changeTurn();
+                    pf::Pause();
+                }
+                else
+                {
+                    cout << "You Win!" << endl;
+                    abort();
+                }
+            }
+        }
+        else
+        {
+            cout << "Game Over! Better luck next time!" << endl;
+            // game.repeatGame();
+            abort();
         }
     }
+
 }

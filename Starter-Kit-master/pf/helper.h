@@ -4,6 +4,7 @@
 
 namespace pf
 {
+    extern int alive;
     extern int kRows;
     extern int kColumns;
     extern int kZombies;
