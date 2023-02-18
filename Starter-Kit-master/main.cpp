@@ -819,6 +819,7 @@ void Game::checkObject(char obj, Alien& alien, vector<Zombie>& zombies)
     }
     else if (obj == 'n')
     {
+        arrowMove = false;
         cout << "Alien stepped on the bomb.BOOOOOM!" <<endl;
         pf::Pause();
         pf::ClearScreen();
