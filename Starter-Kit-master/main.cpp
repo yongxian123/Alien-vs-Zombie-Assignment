@@ -99,7 +99,7 @@ public:
     void help();
     bool command(Alien& alien, vector<Zombie>& zombies);
     int AttackPod(vector<Zombie>& zombies);
-    int CannonBall(vector<Zombie> &zombies)
+    int CannonBall(vector<Zombie> &zombies);
     void changeAlive();
     bool repeatGame(Alien &alien, vector<Zombie> &zombies);
 };
