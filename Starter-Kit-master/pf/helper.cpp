@@ -12,6 +12,7 @@ namespace pf
     int kRows = 5;
     int kColumns = 11;
     int alienRow, alienCol;
+    int nRow, nCol;
     int rockRow, rockCol;
     vector<vector<char>> kBoard;
     vector<pair<int, int>> zombiePos;
@@ -152,12 +153,12 @@ namespace pf
         }
     }
 
-    void ZombieMovement((kBoard[row + addRow][col + addCol] != 'A' && kBoard[row + addRow][col + addCol] != '1' && kBoard[row + addRow][col + addCol] != '2'
+    void ZombieMovement(int& row, int& col, int addRow, int addCol)
+    {
+        if (kBoard[row + addRow][col + addCol] != 'A' && kBoard[row + addRow][col + addCol] != '1' && kBoard[row + addRow][col + addCol] != '2'
         && kBoard[row + addRow][col + addCol] != '3' && kBoard[row + addRow][col + addCol] != '4' && kBoard[row + addRow][col + addCol] != '5'
         && kBoard[row + addRow][col + addCol] != '6' && kBoard[row + addRow][col + addCol] != '7' && kBoard[row + addRow][col + addCol] != '8'
-        && kBoard[row + addRow][col + addCol] != '9'))
-    {
-        if (kBoard[row + addRow][col + addCol] != 'A')
+        && kBoard[row + addRow][col + addCol] != '9')
         {
             kBoard[row + addRow][col + addCol] = kBoard[row][col];
             kBoard[row][col] = ' ';
