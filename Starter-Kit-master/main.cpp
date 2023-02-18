@@ -37,7 +37,7 @@ class Alien
         }
         friend ifstream& operator>>(ifstream& readFile, Alien& alien)
         {
-            readFile >> alien.health >> alien.atk >> alien.turn;
+            readFile >> alien.health >> alien.atk >> alien.turn >> pf::alienRow >> pf::alienCol;
             return readFile;
         }
         void changeTurn();
