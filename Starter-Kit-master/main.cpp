@@ -99,6 +99,7 @@ public:
     void help();
     bool command(Alien& alien, vector<Zombie>& zombies);
     int AttackPod(vector<Zombie>& zombies);
+    int CannonBall(vector<Zombie> &zombies)
     void changeAlive();
     bool repeatGame(Alien &alien, vector<Zombie> &zombies);
 };
@@ -468,6 +469,61 @@ void Game::refreshBoard(Alien alien, vector<Zombie>& zombies)
     cout << endl;
 }
 
+int Game::CannonBall(vector<Zombie> &zombies)
+{
+    int min_distance = INT_MAX;
+    int target_index = 0;
+    int distance = INT_MAX;
+    vector<int> sameMagnitude;
+    int sameDistance = INT_MAX;
+
+    // find the nearest zombie
+    for (int i = 0; i < pf::kZombies; i++)
+    {
+        if (zombies[i].getHealth() > 0)
+        {
+            int zRow = zombies[i].getRow();
+            int zCol = zombies[i].getCol();
+            int aRow = pf::alienRow;
+            int aCol = pf::alienCol;
+
+            // zombie
+            int tempDistance = sqrt((zCol - aCol) * (zCol - aCol) + (zRow - aRow) * (zRow - aRow));
+            if (tempDistance < distance)
+            {
+                distance = tempDistance;
+                target_index = i;
+            }
+            else if (tempDistance == distance)
+            {
+                sameMagnitude.push_back(i);
+                sameDistance = tempDistance;
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    if (sameDistance < distance)
+    {
+        int randZombie = rand() % sameMagnitude.size();
+        target_index = sameMagnitude[randZombie];
+    }
+    // deal damage to the nearest zombie
+    int currZombieHealth = zombies[target_index].getHealth() - 100;
+    if (currZombieHealth < 0)
+    {
+        zombies[target_index].changeHealth(0);
+    }
+    else
+    {
+        zombies[target_index].changeHealth(currZombieHealth);
+    }
+    return target_index;
+}
+
 int Game::AttackPod(vector<Zombie> &zombies)
 {
     int min_distance = INT_MAX;
@@ -570,7 +626,7 @@ bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
             cout << "Alien finds an empty space." << endl << endl;
             pf::Pause();
         }
-        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5')
+        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5' || arrowObj == '6' || arrowObj == '7' || arrowObj == '8' || arrowObj == '9')
         {
             int numOfZombie = arrowObj - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -619,7 +675,7 @@ bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
         {
             pf::Pause();
         }
-        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5')
+        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5' || arrowObj == '6' || arrowObj == '7' || arrowObj == '8' || arrowObj == '9')
         {
             int numOfZombie = arrowObj - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -668,7 +724,7 @@ bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
         {
             pf::Pause();
         }
-        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5')
+        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5' || arrowObj == '6' || arrowObj == '7' || arrowObj == '8' || arrowObj == '9')
         {
             int numOfZombie = arrowObj - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -717,7 +773,7 @@ bool Game::arrow(char& obj, Alien& alien, vector<Zombie>& zombies)
         {
             pf::Pause();
         }
-        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5')
+        else if(arrowObj == '1' || arrowObj == '2' || arrowObj == '3' || arrowObj == '4' || arrowObj == '5' || arrowObj == '6' || arrowObj == '7' || arrowObj == '8' || arrowObj == '9')
         {
             int numOfZombie = arrowObj - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -760,6 +816,25 @@ void Game::checkObject(char obj, Alien& alien, vector<Zombie>& zombies)
         int curratk = alien.getAttack() + 20;
         alien.changeAttack(curratk);
         cout << "Alien's attack has increased by 20!" << endl << endl;
+    }
+    else if (obj == 'n')
+    {
+        cout << "Alien stepped on the bomb.BOOOOOM!" <<endl;
+        pf::Pause();
+        pf::ClearScreen();
+        cout << "Stop playing around the nukes next time xD" << endl;
+        alien.changeHealth(0);
+        for (int i = 0; i < pf::kZombies; i++)
+        {
+        zombies[i].changeHealth(0);
+        }
+    }
+    else if (obj == 's')
+    {
+        cout << "Alien finds a super cannonball." << endl;
+        int index = CannonBall(zombies);
+        cout << "The nearest zombie " << index + 1 << " takes 100 damage." << endl;
+        zombies[index].checkAlive();
     }
     else if(obj == 'h')
     {
@@ -857,7 +932,7 @@ bool Game::command(Alien& alien, vector<Zombie>& zombies)
             cout << "Alien finds an empty space." << endl << endl;
             pf::Pause();
         }
-        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5')
+        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5' || success == '6' || success == '7' || success == '8' || success == '9')
         {
             int numOfZombie = success - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -887,7 +962,7 @@ bool Game::command(Alien& alien, vector<Zombie>& zombies)
             cout << "Alien finds an empty space." << endl << endl;
             pf::Pause();
         }
-        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5')
+        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5' || success == '6' || success == '7' || success == '8' || success == '9')
         {
             int numOfZombie = success - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -917,7 +992,7 @@ bool Game::command(Alien& alien, vector<Zombie>& zombies)
             cout << "Alien finds an empty space." << endl << endl;
             pf::Pause();
         }
-        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5')
+        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5' || success == '6' || success == '7' || success == '8' || success == '9')
         {
             int numOfZombie = success - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -947,7 +1022,7 @@ bool Game::command(Alien& alien, vector<Zombie>& zombies)
             cout << "Alien finds an empty space." << endl << endl;
             pf::Pause();
         }
-        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5')
+        else if(success == '1' || success == '2' || success == '3' || success == '4' || success == '5' || success == '6' || success == '7' || success == '8' || success == '9')
         {
             int numOfZombie = success - '0';
             int currhp = zombies[numOfZombie - 1].getHealth() - alien.getAttack();
@@ -1116,13 +1191,13 @@ bool Game::updateSettings()
 
     cout << "Zombie Settings" << endl;
     cout << "----------------" << endl;
-    cout << "*Only 5 zombies maximum." << endl << endl;
+    cout << "*Only 9 zombies maximum." << endl << endl;
     cout << "Enter number of zombies => ";
     cin >> tempZombies;
 
     if (tempZombies > 5)
     {
-        cout << "*Only 5 zombies maximum are allowed!" << endl;
+        cout << "*Only 9 zombies maximum are allowed!" << endl;
         pf::Pause();
         pf::ClearScreen();
         updateSettings();

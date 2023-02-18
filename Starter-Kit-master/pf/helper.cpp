@@ -17,8 +17,8 @@ namespace pf
     vector<pair<int, int>> zombiePos;
     int alive = 0;
 
-    char objects[] = {'^', 'v', '<', '>', 'h', 'p', 'r', ' ', ' ', ' ', ' '};
-    char objectsNoSpace[] = {'^', 'v', '<', '>', 'h', 'p', 'r'};
+    char objects[] = {'^', 'v', '<', '>', 'h', 'p', 'r', ' ', ' ', ' ', ' ','s'};
+    char objectsNoSpace[] = {'^', 'v', '<', '>', 'h', 'p', 'r','s'};
 
     int kZombies = 1;
 
@@ -123,7 +123,11 @@ namespace pf
              || kBoard[finalRow][finalCol] == '2'
              || kBoard[finalRow][finalCol] == '3'
              || kBoard[finalRow][finalCol] == '4'
-             || kBoard[finalRow][finalCol] == '5')
+             || kBoard[finalRow][finalCol] == '5'
+             || kBoard[finalRow][finalCol] == '6'
+             || kBoard[finalRow][finalCol] == '7'
+             || kBoard[finalRow][finalCol] == '8'
+             || kBoard[finalRow][finalCol] == '9')
         {
             return kBoard[finalRow][finalCol];
         }
@@ -322,7 +326,7 @@ namespace pf
         }
 
         // INSERT GAME OBJECTS INTO BOARD:
-        int numOfObjects = 11;
+        int numOfObjects = 12;
 
         for (int row = 0; row < kRows; ++row)
         {
@@ -340,6 +344,15 @@ namespace pf
                 }
             }
         }
+
+        do
+        {
+            nRow = rand() % kRows;
+            nCol = rand() % kColumns;
+        }    
+        while (kBoard[nRow][nCol] == 'A' || kBoard[nRow][nCol] == '1' || kBoard[nRow][nCol] == '2' || kBoard[nRow][nCol] == '3' || kBoard[nRow][nCol] == '4' || kBoard[nRow][nCol] == '5' || kBoard[nRow][nCol] == '6' ||kBoard[nRow][nCol] == '7' || kBoard[nRow][nCol] == '8' || kBoard[nRow][nCol] == '9');
+       
+        kBoard[nRow][nCol] = 'n';
     }
 
     void ShowGameBoard()
