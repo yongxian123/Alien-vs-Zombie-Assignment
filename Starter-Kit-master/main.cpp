@@ -1263,13 +1263,17 @@ bool gameflow()
     cout << "Assignment (Part 1)" << endl;
     cout << "Let's Get Started!" << endl;
 
-    // TEMPORARY START SCREEN:
+    //START SCREEN:
+    pf::kRows = 5;
+    pf::kColumns = 11;
+    pf::kZombies = 1;
+    
     Game game;
     game.displaySettings();
     game.changeAlive();
     pf::Pause();
 
-    // BOARD DISPLAY, RANDOMIZE AND SHOW ATTRIBUTES:
+    // BOARD DISPLAY, CLEAR, RANDOMIZE AND SHOW ATTRIBUTES:
     pf::kBoard.clear();
     pf::zombiePos.clear();
     createGameBoard();
