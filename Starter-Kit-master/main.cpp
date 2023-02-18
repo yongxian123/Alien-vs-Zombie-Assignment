@@ -575,7 +575,7 @@ int Game::AttackPod(vector<Zombie> &zombies)
 bool Game::repeatGame(Alien &alien, vector<Zombie> &zombies)
 {
     char ans;
-    cout << "Do you want to play again?(y/n) " << endl;
+    cout << "Do you want to play again? (y/n) ";
     cin >> ans;
     if (ans == 'y')
     {
@@ -1118,7 +1118,7 @@ bool Game::command(Alien& alien, vector<Zombie>& zombies)
     else if (comm_input == "quit")
     {
         char quit;
-        cout << "Are you sure? (y/n): " << endl;
+        cout << "Are you sure? (y/n): ";
         cin >> quit;
 
         if (quit == 'y')
