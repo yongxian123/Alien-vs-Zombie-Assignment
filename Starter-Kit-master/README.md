@@ -5,8 +5,6 @@
 Alien vs. Zombie is a puzzle game that consist of an Alien, which is the player, and Zombies which are the Alien's enemies.
 The goal of the game is to defeat all the Zombies by interacting with different game objects that appear on the game board.
 
-You may add one signature screenshot of your program here or above the title. Check out [this tutorial](https://www.digitalocean.com/community/tutorials/markdown-markdown-images) to learn how to do it.
-
 [Video Demo](https://youtu.be/g3EnqruzTTk).
 
 ## Compilation Instructions
