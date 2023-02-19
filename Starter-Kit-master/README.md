@@ -7,7 +7,7 @@ The goal of the game is to defeat all the Zombies by interacting with different 
 
 You may add one signature screenshot of your program here or above the title. Check out [this tutorial](https://www.digitalocean.com/community/tutorials/markdown-markdown-images) to learn how to do it.
 
-[Video Demo](https://youtu.be/5woTpNdhTVs).
+[Video Demo](https://youtu.be/g3EnqruzTTk).
 
 ## Compilation Instructions
 
@@ -48,16 +48,30 @@ changes direction according to the arrow. Each arrow adds Alien's attack by 20 a
 stacked. If an alien is hit along the way, deals the accumulated damage towards zombie. Every
 movement leaves a trail object on the previous position of the Alien.
 - '.' represents trail. Turns into random pickable game object after Alien's turn.
+- 's' represents super cannon ball. Damages the nearest zombie with 100 damage. This objects seeks
+to aid with clearing hordes of zombies.
+- 'n' represents nuke. Players should try not to interact with this object as every entity on the 
+board will lose their lives and this will end up with players losing the game.
                      
 Commands:
 
 - When in 'command>' displays, type 'help' to view available commands.
 - Commands include: 'up', 'down', 'left', 'right', 'arrow', 'save', 'load', 'quit'
+
+- Up - Alien moves up.
+- Down - Alien moves down.
+- Left - Alien moves left.
+- Right - Alien moves right.
+- Arrow - Select an arrow on the board based on row and column number and change its direction. (Eg. 4 5 left)
+- Save - Saves current game with file named by player.
+- Load - Able to save current game with file named by player and load file named by player.
+- Quit - Quit the game.
         
 Game Flow:
 
 - The game will continue as long as the Alien is still alive or the Zombies are still alive.
 - If the Alien dies, it is game over. If all Zombies die, it is a victory for the player.
+- Players should not touch the nuke as it will result in an instant defeat.
 - The game can be restarted after the end.
 
 ## Progress Log
@@ -67,7 +81,7 @@ Game Flow:
 
 ## Contributors
 
--Liew Yong Xian
--Lee Zheng Wei
+1. Liew Yong Xian
+2. Lee Zheng Wei
 
 
